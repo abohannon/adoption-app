@@ -1,57 +1,15 @@
-import * as cheerio from 'cheerio'
-import puppeteer from 'puppeteer'
-import axios from 'axios'
+import express from 'express'
+import animalsApi from './components/animals/animalsApi'
 
-const $ = cheerio.load
+const app = express()
+const PORT = 3000
 
-const scrapeSDHumanSociety = async (url: string) => {
-  try {
-    const browser = await puppeteer.launch()
-    const page = await browser.newPage()
-    await page.goto(url)
-    await page.waitForSelector('.pet-item', { timeout: 10000})
+app.get('/', (req, res) => {
+  res.send('Hello worlds!')
+})
 
-    const data = await page.evaluate(() => {
-      return document.querySelector('#animalGallery')?.innerHTML
-    })
+app.use('/animals', animalsApi)
 
-    await browser.close()
-
-    if (!data) {
-      throw new Error('No animals found')
-    }
-
-    const $ = cheerio.load(data)
-
-    const animals = $('.pet-item')
-
-    animals.each((i, el) => {
-      const animal = {
-        name: '',
-        type: '',
-        breed: '',
-        sex: '',
-        url: '',
-        location: '',
-        imageUrl: '',
-        organization: 'San Diego Human Society',
-        organizationUrl: 'https://www.sdhumane.org',
-        organizationPhoneNumber: '619-299-7012'
-      }
-
-      animal.name = $(el).find('.pet-info').find('h6').find('.petName').text() || ''
-      animal.type = $(el).find('.pet-info').find('.pet-type').text() || ''
-      animal.breed = $(el).find('.pet-info').find('.breed').text() || ''
-      animal.sex = $(el).find('.pet-info').find('.gender').text() || ''
-      animal.url = $(el).find('.pet-info').find('.learnMore').attr('href') || ''
-      animal.imageUrl = $(el).find('.thumbnail').find('img').attr('src') || ''
-
-      console.log(animal)
-    })
-    // console.log(animals)
-  } catch (err) {
-    console.log('ERROR: ', err)
-  }
-}
-
-scrapeSDHumanSociety('https://www.sdhumane.org/adopt/available-pets/')
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`)
+})
