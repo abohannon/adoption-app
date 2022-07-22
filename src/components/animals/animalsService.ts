@@ -54,7 +54,7 @@ const animalsService = {
 
       return animals
     } catch (err) {
-      console.log('ERROR: ', err)
+      console.error(err)
     }
   }
 }

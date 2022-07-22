@@ -5,12 +5,16 @@
   "main": "app.js",
   "scripts": {
     "build": "tsc -p .",
+    "start": "npm run build && node dist/app.js",
     "dev": "nodemon --watch src/**/*.ts --exec \"ts-node\" src/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/abohannon/adoption-app.git"
+  },
+  "engines": {
+    "node": "16.x"
   },
   "author": "",
   "license": "ISC",
