@@ -7,7 +7,7 @@ const animalsService = {
     const url = 'https://www.sdhumane.org/adopt/available-pets/'
 
     try {
-      const browser = await puppeteer.launch()
+      const browser = await puppeteer.launch({ args: ['--no-sandbox'] })
       const page = await browser.newPage()
       await page.goto(url)
       await page.waitForSelector('.pet-item', { timeout: 10000})
