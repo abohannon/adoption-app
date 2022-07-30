@@ -3,7 +3,7 @@ import animalsService from './animalsService'
 
 export const getAnimals = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const sdHumaneSocietyData = await animalsService.scrapeSDHumanSociety()
+    const sdHumaneSocietyData = await animalsService.fetchSDHumaneSociety()
 
     return res.json(sdHumaneSocietyData)
   } catch (err) {
